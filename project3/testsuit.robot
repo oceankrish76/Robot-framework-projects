@@ -3,6 +3,7 @@ Library           SeleniumLibrary
 Test Teardown    Close All Browsers
 Suite Setup      Set Screenshot Directory  /Users/bagale/Desktop/robot_test/first_test/RobotFramework-Projects/project3/screenshots
 Library        DateTime
+Library    FakerLibrary
 #Force Tags     10000
 
 *** Variables *** 
@@ -21,6 +22,13 @@ ${TYPE OF FILE}           png
 *** Test Cases ***
 MyFirstTest
     Log     ${HELLO_WORLD_TEXT}
+
+FakerLibrary Words Generation
+    ${words}=    FakerLibrary.Words   nb=${5}
+    Log    words: ${words}
+    ${words}=    FakerLibrary.Words    nb=${10}
+    Log    words: ${words}
+
 
 FirstSeleniumTest
 
@@ -44,7 +52,7 @@ SampleLoginTest
     Input Text          id=txtPassword    admin123
     Click Button     name=Submit
     Wait Until Page Contains  Welcome Paul
-    Click Element   //a[@id='welcome1']
+    Click Element   //a[@id='welcome']
     Wait Until Page Contains Element  //body/div[@id='wrapper']/div[@id='branding']/div[@id='welcome-menu']/ul/li[2]
     sleep   2s
     Click Element   //body/div[@id='wrapper']/div[@id='branding']/div[@id='welcome-menu']/ul/li[2]
@@ -55,10 +63,3 @@ Get DateTime
   ${date1}=  Get Current Date  result_format=%Y-%m-%d %H-%M-%S
   [Return]     ${date1}
 
-Screenshot
-  [Arguments]  ${filename}
-  Set Screenshot Directory  /Users/bagale/Desktop/robot_test/first_test/RobotFramework-Projects/project3/screenshots
-  Wait Until Page Contains  Element
-  # ${datetime}=  Get DateTime
-  Capture Page Screenshot  ${filename}.${TYPE OF FILE}
-  Log To Console  ${\n}Screenshot

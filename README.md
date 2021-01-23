@@ -6,3 +6,19 @@ Learning project for robot framework
 
 <h1>Installing RobotFramework</h1>
 pip install robotframework
+
+
+next steps
+- Study more about locators.
+- Use more keywords with different files
+- use more locators with different files
+- try some faker library reated variables
+examples:
+first import and install faker library
+pip3 install robotframework-faker
+generate one faker name or word or sentence and replace it with variables.
+- done 
+
+start new project with  
+- https://opensource-demo.orangehrmlive.com/index.php/pim/addEmployee
+finish addEmployee part. and vaidate all the input are right.
