@@ -5,7 +5,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="-1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta content="Robot Framework 3.2b2 (Python 2.7.14 on darwin)" name="Generator">
+<meta content="Robot Framework 3.2.2 (Python 3.6.0b3 on darwin)" name="Generator">
 <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKcAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAAqAAAAAAAAAAAAAAAAAAAALIAAAD/AAAA4AAAANwAAADcAAAA3AAAANwAAADcAAAA3AAAANwAAADcAAAA4AAAAP8AAACxAAAAAAAAAKYAAAD/AAAAuwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC/AAAA/wAAAKkAAAD6AAAAzAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAN8AAAD/AAAA+gAAAMMAAAAAAAAAAgAAAGsAAABrAAAAawAAAGsAAABrAAAAawAAAGsAAABrAAAADAAAAAAAAADaAAAA/wAAAPoAAADDAAAAAAAAAIsAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAANEAAAAAAAAA2gAAAP8AAAD6AAAAwwAAAAAAAAAAAAAAMgAAADIAAAAyAAAAMgAAADIAAAAyAAAAMgAAADIAAAAFAAAAAAAAANoAAAD/AAAA+gAAAMMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADaAAAA/wAAAPoAAADDAAAAAAAAADwAAAB8AAAAAAAAAGAAAABcAAAAAAAAAH8AAABKAAAAAAAAAAAAAAAAAAAA2gAAAP8AAAD6AAAAwwAAAAAAAADCAAAA/wAAACkAAADqAAAA4QAAAAAAAAD7AAAA/wAAALAAAAAGAAAAAAAAANoAAAD/AAAA+gAAAMMAAAAAAAAAIwAAAP4AAAD/AAAA/wAAAGAAAAAAAAAAAAAAAMkAAAD/AAAAigAAAAAAAADaAAAA/wAAAPoAAADDAAAAAAAAAAAAAAAIAAAAcAAAABkAAAAAAAAAAAAAAAAAAAAAAAAAEgAAAAAAAAAAAAAA2gAAAP8AAAD7AAAAywAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAN4AAAD/AAAAqwAAAP8AAACvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALIAAAD/AAAAsgAAAAAAAAC5AAAA/wAAAMoAAADAAAAAwAAAAMAAAADAAAAAwAAAAMAAAADAAAAAwAAAAMkAAAD/AAAAvAAAAAAAAAAAAAAAAAAAAKwAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAArQAAAAAAAAAAwAMAAIABAAAf+AAAP/wAAD/8AAAgBAAAP/wAAD/8AAA//AAAJIwAADHEAAA//AAAP/wAAB/4AACAAQAAwAMAAA==">
 <style media="all" type="text/css">
 /* Generic and misc styles */
@@ -579,11 +579,18 @@ function expandSuite(suite) {
     else
         expandCriticalFailed(suite);
 }
-function expandElement(item) {
+function expandElement(item, retryCount) {
+    retryCount = typeof retryCount !== 'undefined' ? retryCount : 3;
     var element = $('#' + item.id);
     var children = element.children('.children');
     // .css is faster than .show and .show w/ callback is terribly slow
     children.css({'display': 'block'});
+    // in rare cases on large logs concurrent expanding fails => retry
+    if (children.css('display') != 'block' && retryCount > 0) {
+        console.debug('expandElement '+item.id+' failed! planning retry...');
+        setTimeout(function() { expandElement(item, retryCount-1); }, 0);
+        return;
+    }
     populateChildren(item.id, children, item.childrenNames);
     element.children('.element-header').removeClass('closed');
 }
@@ -1743,25 +1750,25 @@ function stopPropagation(event) {
 window.output = {};
 </script>
 <script type="text/javascript">
-window.output["suite"] = [1,2,3,0,[],[0,0,10517],[],[[4,0,1,0,[],[1,-12489,3],[[0,5,6,0,7,8,0,0,[1,-12487,1],[],[[-12487,2,8]]]]],[9,0,1,0,[],[0,-12484,17636,10],[[0,11,12,0,13,14,0,0,[1,-12482,6284],[],[[-12481,2,15]]],[0,16,12,0,17,18,0,0,[1,-6197,3],[],[]],[0,19,12,0,20,21,0,0,[1,-6194,482],[],[[-6193,2,22]]],[0,23,12,0,24,25,0,0,[1,-5711,454],[],[[-5709,2,26],[-5315,2,27]]],[0,28,12,0,29,30,0,0,[0,-5256,10408],[[0,31,12,0,32,0,0,0,[1,4802,341],[],[[5142,2,33]]]],[[-5255,2,34],[5151,5,10]]]]],[35,0,1,36,[],[0,5154,5361,37],[[0,11,12,0,13,38,0,0,[1,5156,4708],[],[[5157,2,39]]],[0,19,12,0,20,40,0,0,[1,9864,154],[],[[9865,2,41]]],[0,19,12,0,20,42,0,0,[1,10019,143],[],[[10019,2,43]]],[0,28,12,0,29,44,0,0,[0,10163,352],[[0,31,12,0,32,0,0,0,[1,10186,327],[],[[10513,2,45]]]],[[10164,2,46],[10515,5,37]]]]]],[],[3,1,3,1]];
+window.output["suite"] = [1,2,3,0,[],[0,0,16315],[],[[4,0,1,0,[],[1,304,2],[[0,5,6,0,7,8,0,0,[1,305,0],[],[[305,2,9]]],[2,10,11,0,12,0,0,0,[1,306,0],[],[]]]],[13,0,1,0,[],[1,307,6956],[[0,14,11,0,15,16,0,0,[1,308,4299],[],[[308,2,17]]],[0,18,11,0,19,20,0,0,[1,4607,2],[],[]],[0,21,11,0,22,23,0,0,[1,4609,213],[],[[4610,2,24]]],[0,25,11,0,26,27,0,0,[1,4823,301],[],[[4824,2,28],[5108,2,29]]],[0,30,6,0,31,32,0,0,[1,5125,2002],[],[[7126,2,33]]],[0,34,11,0,35,0,0,0,[1,7127,133],[],[]],[0,5,6,0,7,36,0,0,[1,7261,1],[],[[7261,2,37]]],[2,10,11,0,12,0,0,0,[1,7262,1],[],[]]]],[38,0,1,39,[40],[0,7265,9047,41],[[1,42,11,0,43,44,0,0,[1,7268,3],[],[]],[0,14,11,0,15,45,0,0,[1,7271,5325],[],[[7272,2,46]]],[0,21,11,0,22,47,0,0,[1,12597,117],[],[[12598,2,48]]],[0,21,11,0,22,49,0,0,[1,12715,107],[],[[12715,2,50]]],[0,51,11,0,52,53,0,0,[1,12823,2751],[],[[12824,2,54]]],[0,55,11,0,56,57,0,0,[1,15575,22],[],[]],[0,58,11,0,59,60,0,0,[0,15597,580],[[0,61,11,0,62,0,0,0,[1,15611,552],[],[[16163,2,63]]]],[[15597,2,64],[16177,5,41]]],[2,10,11,0,12,0,0,0,[1,16178,134],[],[]]]]],[[1,42,11,0,43,44,0,0,[1,303,0],[],[]]],[3,2,3,2]];
 </script>
 <script type="text/javascript">
 window.output["strings"] = [];
 </script>
 <script type="text/javascript">
-window.output["strings"] = window.output["strings"].concat(["*","*Testsuit","*/Users/shaliksapkota/Desktop/test_cases/project3/testsuit.robot","*testsuit.robot","*MyFirstTest","*Log","*BuiltIn","*<p>Logs the given message with the given level.\x3c/p>","*Hello World","*FirstSeleniumTest","*Button with locator 'name=btnk' not found.","*Open Browser","*SeleniumLibrary","*<p>Opens a new browser instance to the optional <code>url\x3c/code>.\x3c/p>","*https:google.com, chrome","*Opening browser 'chrome' to base url 'https:google.com'.","*Set Browser Implicit Wait","*<p>Sets the implicit wait value used by Selenium.\x3c/p>","*5","*Input Text","*<p>Types the given <code>text\x3c/code> into the text field identified by <code>locator\x3c/code>.\x3c/p>","*name=q, Automation step by step","*Typing text 'Automation step by step' into text field 'name=q'.","*Press Keys","*<p>Simulates the user pressing key(s) to an element or on the active browser.\x3c/p>","*name=q, Enter","*Sending key(s) (u'Enter',) to name=q element.","*Sending keys Enter","*Click Button","*<p>Clicks the button identified by <code>locator\x3c/code>.\x3c/p>","*name=btnk","*Capture Page Screenshot","*<p>Takes a screenshot of the current page and embeds it into a log file.\x3c/p>","*\x3c/td>\x3c/tr><tr><td colspan=\"3\"><a href=\"selenium-screenshot-4.png\"><img src=\"selenium-screenshot-4.png\" width=\"800px\">\x3c/a>","*Clicking button 'name=btnk'.","*SampleLoginTest","*<p>This is a simple login Test\x3c/p>","*Button with locator 'id=login' not found.","*<a href=\"https://opensource-demo.orangehrmlive.com\">https://opensource-demo.orangehrmlive.com\x3c/a>, chrome","*Opening browser 'chrome' to base url '<a href=\"https://opensource-demo.orangehrmlive.com\">https://opensource-demo.orangehrmlive.com\x3c/a>'.","*id=txtUsername, Admin","*Typing text 'Admin' into text field 'id=txtUsername'.","*id=txtPassword, admin123","*Typing text 'admin123' into text field 'id=txtPassword'.","*id=login","*\x3c/td>\x3c/tr><tr><td colspan=\"3\"><a href=\"selenium-screenshot-5.png\"><img src=\"selenium-screenshot-5.png\" width=\"800px\">\x3c/a>","*Clicking button 'id=login'."]);
+window.output["strings"] = window.output["strings"].concat(["*","*Testsuit","*/Users/bagale/Desktop/robot_test/first_test/RobotFramework-Projects/project3/testsuit.robot","*testsuit.robot","*MyFirstTest","*Log","*BuiltIn","*<p>Logs the given message with the given level.\x3c/p>","*${HELLO_WORLD_TEXT}","*Hello World","*Close All Browsers","*SeleniumLibrary","*<p>Closes all open browsers and resets the browser cache.\x3c/p>","*FirstSeleniumTest","*Open Browser","*<p>Opens a new browser instance to the optional <code>url\x3c/code>.\x3c/p>","*${GOOGLE_URL}, ${GOOGLE_NAME}","*Opening browser 'chrome' to base url 'https:google.com'.","*Set Browser Implicit Wait","*<p>Sets the implicit wait value used by Selenium.\x3c/p>","*5","*Input Text","*<p>Types the given <code>text\x3c/code> into the text field identified by <code>locator\x3c/code>.\x3c/p>","*${LOCATOR_GOOGLE_SEARCH_TEXT_FIELD}, Automation step by step","*Typing text 'Automation step by step' into text field 'name=q'.","*Press Keys","*<p>Simulates the user pressing key(s) to an element or on the active browser.\x3c/p>","*${LOCATOR_GOOGLE_SEARCH_TEXT_FIELD}, Enter","*Sending key(s) ('Enter',) to name=q element.","*Sending keys Enter","*Sleep","*<p>Pauses the test executed for the given time.\x3c/p>","*2","*Slept 2 seconds","*Close Browser","*<p>Closes the current browser.\x3c/p>","*${TEST_COMPLETED_TEXT}","*Test Completed","*SampleLoginTest","*<p>This is a simple login Test\x3c/p>","*1000","*Element with locator '//a[@id='welcome1']' not found.","*Set Screenshot Directory","*<p>Sets the directory for captured screenshots.\x3c/p>","*/Users/bagale/Desktop/robot_test/first_test/RobotFramework-Projects/project3/screenshots","*<a href=\"https://opensource-demo.orangehrmlive.com\">https://opensource-demo.orangehrmlive.com\x3c/a>, chrome","*Opening browser 'chrome' to base url '<a href=\"https://opensource-demo.orangehrmlive.com\">https://opensource-demo.orangehrmlive.com\x3c/a>'.","*id=txtUsername, Admin","*Typing text 'Admin' into text field 'id=txtUsername'.","*id=txtPassword, admin123","*Typing text 'admin123' into text field 'id=txtPassword'.","*Click Button","*<p>Clicks the button identified by <code>locator\x3c/code>.\x3c/p>","*name=Submit","*Clicking button 'name=Submit'.","*Wait Until Page Contains","*<p>Waits until <code>text\x3c/code> appears on the current page.\x3c/p>","*Welcome Paul","*Click Element","*<p>Click the element identified by <code>locator\x3c/code>.\x3c/p>","*//a[@id='welcome1']","*Capture Page Screenshot","*<p>Takes a screenshot of the current page and embeds it into a log file.\x3c/p>","eNqNizsOgCAUwK5C2BGMiwNwFwJPIOEXHkaPL3FxdejStJIPpyUfXcsXR2xN2ExRdKNaGhI6HIqi7QAFQx3IERKUeGb2SbYurfjZx+wJdvt3IFd0Iyi6C9HuuXOjH3UiMo8=","*Clicking element '//a[@id='welcome1']'."]);
 </script>
 <script type="text/javascript">
-window.output["stats"] = [[{"elapsed":"00:00:23","fail":2,"label":"Critical Tests","pass":1},{"elapsed":"00:00:23","fail":2,"label":"All Tests","pass":1}],[],[{"elapsed":"00:00:11","fail":2,"id":"s1","label":"Testsuit","name":"Testsuit","pass":1}]];
+window.output["stats"] = [[{"elapsed":"00:00:16","fail":1,"label":"Critical Tests","pass":2},{"elapsed":"00:00:16","fail":1,"label":"All Tests","pass":2}],[{"elapsed":"00:00:09","fail":1,"label":"1000","pass":0}],[{"elapsed":"00:00:16","fail":1,"id":"s1","label":"Testsuit","name":"Testsuit","pass":2}]];
 </script>
 <script type="text/javascript">
 window.output["errors"] = [];
 </script>
 <script type="text/javascript">
-window.output["baseMillis"] = 1585153816456;
+window.output["baseMillis"] = 1611416794027;
 </script>
 <script type="text/javascript">
-window.output["generated"] = 10539;
+window.output["generated"] = 16340;
 </script>
 <script type="text/javascript">
 window.output["expand_keywords"] = null;
@@ -1798,12 +1805,12 @@ $(document).ready(function() {
     addErrors();
     addExecutionLog(topsuite);
     addLogLevelSelector(window.settings['minLevel'], window.settings['defaultLevel']);
-    loadAndExpandElementIds(window.output['expand_keywords']);
     if (window.location.hash) {
         makeElementVisible(window.location.hash.substring(1));
     } else {
         expandSuite(topsuite);
     }
+    setTimeout(function () { loadAndExpandElementIds(window.output['expand_keywords']); }, 100);
 });
 
 function addLogLevelSelector(minLevel, defaultLevel) {
