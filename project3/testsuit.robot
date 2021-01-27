@@ -16,9 +16,12 @@ ${LOCATOR_GOOGLE_SEARCH_TEXT_FIELD}      name=q
 ${TEST_COMPLETED_TEXT}       Test Completed
 ${TYPE OF FILE}           png
 ${UploadFiletest}         css=[type='file']
-${AddFile}                /Users/bagale/Desktop/robot_test/first_test/RobotFramework-Projects/project3/cli.png
+${AddFile}         id=photofile       /Users/bagale/Desktop/robot_test/first_test/RobotFramework-Projects/project3/prof.png
 
-
+${first-name}       id=firstName
+${last-name}       id=lastName
+${employee-id}       id=employeeId
+${save-button}       id=btnSave
 
 
 *** Test Cases ***
@@ -72,27 +75,26 @@ addEmployeeTest
     
     click Element  //a[@id='menu_pim_addEmployee']
 
-    ${"first_name"} set variable id:firstName
-    ${"last_name"} set variable id:lastName
-    ${"employee_id"} set variable id:employeeId
-    ${"save_button"} set variable id:btnSave
+    
 
-    element should be visible ${"first_name"}
-    element should be enabled ${"first_name"}
-    element should be visible ${"last_name"}
-    element should be enabled ${"last_name"}
-    element should be visible ${"employee_id"}
-    element should be enabled ${"employee_id"}
+    element should be visible    ${first-name}
+    element should be enabled    ${first-name}
+    element should be visible    ${last-name}
+    element should be enabled    ${last-name}
+    element should be visible    ${employee-id}
+    element should be enabled    ${employee-id}
+    element should be visible    ${employee-id}
+    element should be enabled    ${employee-id}
 
-    input text ${"first_name"} Krishna
-    input text ${"last_name"} Bagale
-    sleep 5s
-    clear element text ${"first_name"}
-    clear element text ${"last_name"}
-    clear element text ${"employee_id"}
+    input text    ${first-name}  Krishna
+    input text    ${last-name}  Bagale
+    sleep  5s
+    clear element text  ${first-name}
+    clear element text  ${last-name}
+    clear element text  ${employee-id}
 
     Choose File     ${UploadFiletest}     ${AddFile}
-    Click Button     ${"save_button"}
+    Click Button     ${save-button}
 
     Log    ${TEST_COMPLETED_TEXT} 
 
