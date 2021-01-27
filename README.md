@@ -22,3 +22,4 @@ generate one faker name or word or sentence and replace it with variables.
 start new project with  
 - https://opensource-demo.orangehrmlive.com/index.php/pim/addEmployee
 finish addEmployee part. and vaidate all the input are right.
+- Inside project3 robot testsuit.robot
