@@ -4,6 +4,8 @@ Test Teardown    Close All Browsers
 Suite Setup      Set Screenshot Directory  /Users/bagale/Desktop/robot_test/first_test/RobotFramework-Projects/project3/screenshots
 Library        DateTime
 Library    FakerLibrary
+Library  OperatingSystem
+Library  String
 #Force Tags     10000
 
 *** Variables *** 
@@ -13,26 +15,30 @@ ${GOOGLE_URL}         https:google.com
 ${ADD_EMPLOYEE}       https://opensource-demo.orangehrmlive.com/index.php/pim/addEmployee
 ${GOOGLE_NAME}        chrome
 ${LOCATOR_GOOGLE_SEARCH_TEXT_FIELD}      name=q
-${TEST_COMPLETED_TEXT}       Test Completed
+${TEST_COMPLETED_TEXT}    Test Completed
 ${TYPE OF FILE}           png
 ${UploadFiletest}         css=[type='file']
-${AddFile}         id=photofile       /Users/bagale/Desktop/robot_test/first_test/RobotFramework-Projects/project3/prof.png
+${UploadFiletestLocator}  //input[@id='photofile']
+${AddFile}                ${EXECDIR}/prof.png
+
 
 ${first-name}       id=firstName
-${last-name}       id=lastName
-${employee-id}       id=employeeId
-${save-button}       id=btnSave
+${last-name}        id=lastName
+${employee-id}      id=employeeId
+${save-button}      id=btnSave
 
 
 *** Test Cases ***
 MyFirstTest
     Log     ${HELLO_WORLD_TEXT}
+    Create File  ${EXECDIR}/example.txt  hello world
+
 
 FakerLibrary Words Generation
     ${words}=    FakerLibrary.Words   nb=${5}
-    Log    words: ${words}
+    Log          words: ${words}
     ${words}=    FakerLibrary.Words    nb=${10}
-    Log    words: ${words}
+    Log          words: ${words}
 
 
 FirstSeleniumTest
@@ -52,8 +58,8 @@ SampleLoginTest
     [Tags]   1000
     [Setup]     Set Screenshot Directory  /Users/bagale/Desktop/robot_test/first_test/RobotFramework-Projects/project3/screenshots
     Open Browser    https://opensource-demo.orangehrmlive.com    chrome
-    Input Text         id=txtUsername    Admin
-    Input Text          id=txtPassword    admin123
+    Input Text       id=txtUsername    Admin
+    Input Text       id=txtPassword    admin123
     Click Button     name=Submit
     Wait Until Page Contains  Dashboard
     Click Element   //a[@id='welcome']
@@ -64,13 +70,13 @@ SampleLoginTest
 
 addEmployeeTest
     Open Browser    ${ADD_EMPLOYEE}   ${GOOGLE_NAME}
-    Input Text         id=txtUsername    Admin
-    Input Text          id=txtPassword    admin123
-    Click Button     name=Submit
+    Input Text      id=txtUsername    Admin
+    Input Text      id=txtPassword    admin123
+    Click Button    name=Submit
     Wait Until Page Contains  Dashboard
 
     # ${"pim"} set variable id:menu_pim_viewPimModule
-    Mouse Over  //a[@id='menu_pim_viewPimModule']
+    Mouse Over     //a[@id='menu_pim_viewPimModule']
     Wait Until Page Contains  Add Employee
     
     click Element  //a[@id='menu_pim_addEmployee']
@@ -93,7 +99,11 @@ addEmployeeTest
     clear element text  ${last-name}
     clear element text  ${employee-id}
 
-    Choose File     ${UploadFiletest}     ${AddFile}
+    Wait Until Page Contains element     //input[@id='photofile']
+    # Click element    //*[@id='photofile']
+
+    @{path}       Get WebElements   //input[@id='photofile']
+    Choose File     ${UploadFiletestLocator}     ${AddFile}
     Click Button     ${save-button}
 
     Log    ${TEST_COMPLETED_TEXT} 
