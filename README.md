@@ -27,3 +27,4 @@ finish addEmployee part. and vaidate all the input are right.
 Next to do: https://opensource-demo.orangehrmlive.com/index.php/leave/viewLeaveList
 <img src="https://i.ibb.co/qxWcm6J/Screen-Shot-2021-01-31-at-18-37-49.png" alt="todo search filter">
 - finish this user story with all functionality included
+- Variable in separate folder & file, then import. Also, variable convention to uppercase as well as well defined names for each pages.
