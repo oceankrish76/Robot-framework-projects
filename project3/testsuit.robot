@@ -6,6 +6,7 @@ Library        DateTime
 Library    FakerLibrary
 Library  OperatingSystem
 Library  String
+Resource    /Users/bagale/Desktop/robot_test/first_test/RobotFramework-Projects/keywords/keywords.robot
 #Force Tags     10000
 
 *** Variables *** 
@@ -29,6 +30,9 @@ ${save-button}      id=btnSave
 
 
 *** Test Cases ***
+Keywords test cases
+    Login to page
+
 MyFirstTest
     Log     ${HELLO_WORLD_TEXT}
     Create File  ${EXECDIR}/example.txt  hello world
@@ -57,11 +61,12 @@ SampleLoginTest
     #Setup Selenium
     [Tags]   1000
     [Setup]     Set Screenshot Directory  /Users/bagale/Desktop/robot_test/first_test/RobotFramework-Projects/project3/screenshots
-    Open Browser    https://opensource-demo.orangehrmlive.com    chrome
-    Input Text       id=txtUsername    Admin
-    Input Text       id=txtPassword    admin123
-    Click Button     name=Submit
-    Wait Until Page Contains  Dashboard
+    Login to page
+    #Open Browser    https://opensource-demo.orangehrmlive.com    chrome
+    #Input Text       id=txtUsername    Admin
+    #Input Text       id=txtPassword    admin123
+    #Click Button     name=Submit
+    #Wait Until Page Contains  Dashboard
     Click Element   //a[@id='welcome']
     Wait Until Page Contains Element  //body/div[@id='wrapper']/div[@id='branding']/div[@id='welcome-menu']/ul/li[2]
     sleep   2s
@@ -69,11 +74,7 @@ SampleLoginTest
     Log    Test Completed
 
 addEmployeeTest
-    Open Browser    ${ADD_EMPLOYEE}   ${GOOGLE_NAME}
-    Input Text      id=txtUsername    Admin
-    Input Text      id=txtPassword    admin123
-    Click Button    name=Submit
-    Wait Until Page Contains  Dashboard
+    Login to page
 
     # ${"pim"} set variable id:menu_pim_viewPimModule
     Mouse Over     //a[@id='menu_pim_viewPimModule']
