@@ -85,13 +85,8 @@ addEmployeeTest
     
 
     element should be visible    ${first-name}
-    element should be enabled    ${first-name}
     element should be visible    ${last-name}
-    element should be enabled    ${last-name}
     element should be visible    ${employee-id}
-    element should be enabled    ${employee-id}
-    element should be visible    ${employee-id}
-    element should be enabled    ${employee-id}
 
     input text    ${first-name}  Krishna
     input text    ${last-name}  Bagale
