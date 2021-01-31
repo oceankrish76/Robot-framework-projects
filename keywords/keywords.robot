@@ -1,5 +1,5 @@
 *** Settings ***
-[Documentation]      test related keywords
+Documentation      test related keywords
 
 *** Keywords ***
 Login to page
